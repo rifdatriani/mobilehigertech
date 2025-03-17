@@ -9,62 +9,65 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   double _circleSize = 100;
-  bool _isExpanded = false;
-  late Timer _timer;
+  double _opacity = 0.0;
 
   @override
   void initState() {
     super.initState();
-    _startAnimation();
+    _startSplashSequence();
   }
 
-  void _startAnimation() {
-    Future.delayed(Duration(seconds: 1), () {
-      if (mounted) {
-        setState(() {
-          _circleSize = MediaQuery.of(context).size.height * 1.5;
-          _isExpanded = true;
-        });
-      }
+  void _startSplashSequence() {
+    Future.delayed(Duration(milliseconds: 500), () {
+      setState(() {
+        _circleSize = 1.0;
+      });
     });
 
-    _timer = Timer(Duration(seconds: 3), () {
-      if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => LoginScreen()),
-        );
-      }
+     Future.delayed(Duration(seconds: 4), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+      );
+    });
+  
+
+    Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        _circleSize = MediaQuery.of(context).size.shortestSide * 2;
+      });
     });
   }
 
-  @override
-  void dispose() {
-    _timer.cancel(); // Pastikan timer dibersihkan
-    super.dispose();
-  }
+   
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        alignment: Alignment.center,
         children: [
+          // SplashScreen 2: Logo memudar dan berubah
+          AnimatedOpacity(
+            duration: Duration(seconds: 1),
+            opacity: _opacity,
+            child: Container(
+              color: Colors.blue[900],
+              child: Center(child: Image.asset('assets/hgt.png', width: 120)),
+            ),
+          ),
+          
+          // SplashScreen 1: Lingkaran membesar
           AnimatedContainer(
             duration: Duration(seconds: 2),
+            curve: Curves.easeInOut,
             width: _circleSize,
             height: _circleSize,
             decoration: BoxDecoration(
-              color: Colors.blue.shade300,
+              color: Colors.blue[900],
               shape: BoxShape.circle,
             ),
           ),
-          Positioned(
-            child: Image.asset(
-              _isExpanded ? 'assets/higertech.png' : 'assets/hgt.png',
-              width: 120,
-            ),
-          ),
+          Center(child: Image.asset('assets/higertech.png', width: 200)),
         ],
       ),
     );

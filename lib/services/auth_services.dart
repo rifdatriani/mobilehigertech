@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class AuthService {
-  final String baseUrl = "https://example.com/api"; // Ganti dengan URL API-mu
+  final String baseUrl = "https://example.com/api"; 
 
   Future<bool> login(String password) async {
     final response = await http.post(
@@ -13,9 +13,9 @@ class AuthService {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      return data["status"] == "success"; // Jika login berhasil, return true
+      return data["status"] == "success";
     } else {
-      return false; // Jika gagal, return false
+      return false;
     }
   }
 }

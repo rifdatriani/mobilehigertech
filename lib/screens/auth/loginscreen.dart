@@ -91,15 +91,23 @@ class _LoginScreenState extends State<LoginScreen> {
                 ElevatedButton(
                   onPressed: _login,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Colors.blue[900],
                     minimumSize: Size(double.infinity, 50),
                   ),
                   child: const Text("Login"),
                 ),
                 
-                const SizedBox(height: 20),
-                const Text(
-                  "Powered By\nPT. Higertech Karya Sinergi",
+                const SizedBox(height: 10),
+                const Text.rich(
+                  TextSpan(
+                    text: "Powered By\n", // Teks biasa
+                    children: [
+                      TextSpan(
+                        text: "PT. Higertech Karya Sinergi", // Teks bold
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.grey),
                 ),
