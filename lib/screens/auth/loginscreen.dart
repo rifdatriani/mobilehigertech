@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:mobilehigertech/screens/home_screen.dart';
+import 'package:mobilehigertech/screens/auth/login/rememberme.dart'; // 
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  // ignore: unused_field
+  bool _rememberMe = false; // Variabel untuk menyimpan status Remember Me
 
   void _login() {
     String username = _usernameController.text;
@@ -62,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 
                 TextField(
                   controller: _usernameController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: "Username",
                     border: OutlineInputBorder(),
                   ),
@@ -72,27 +76,29 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextField(
                   controller: _passwordController,
                   obscureText: true,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: "Password",
                     border: OutlineInputBorder(),
                     suffixIcon: Icon(Icons.visibility),
                   ),
                 ),
                 const SizedBox(height: 10),
-                
-                Row(
-                  children: [
-                    Checkbox(value: false, onChanged: (value) {}),
-                    const Text("Remember me"),
-                  ],
+
+                // Gunakan RememberMeCheckbox
+                RememberMeCheckbox(
+                  onChanged: (value) {
+                    setState(() {
+                      _rememberMe = value ?? false;
+                    });
+                  },
                 ),
-                
+
                 const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: _login,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue[900],
-                    minimumSize: Size(double.infinity, 50),
+                    minimumSize: const Size(double.infinity, 50),
                   ),
                   child: const Text("Login"),
                 ),
@@ -100,10 +106,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 10),
                 const Text.rich(
                   TextSpan(
-                    text: "Powered By\n", // Teks biasa
+                    text: "Powered By\n",
                     children: [
                       TextSpan(
-                        text: "PT. Higertech Karya Sinergi", // Teks bold
+                        text: "PT. Higertech Karya Sinergi",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],

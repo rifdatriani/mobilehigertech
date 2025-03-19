@@ -20,12 +20,12 @@ android {
     }
 
     defaultConfig {
-    applicationId = "com.example.mobilehigertech"
-    minSdk = 21 // Pastikan minimal 20 agar Google Maps berjalan
-    targetSdk = flutter.targetSdkVersion
-    versionCode = flutter.versionCode
-    versionName = flutter.versionName
-}
+        applicationId = "com.example.mobilehigertech"
+        minSdk = 21 // Pastikan minimal 20 agar Google Maps berjalan
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+    }
 
     buildTypes {
         release {

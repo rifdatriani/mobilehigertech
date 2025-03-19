@@ -1,3 +1,4 @@
+// ignore_for_file: file_names
 import 'package:flutter/material.dart';
 
 class Station {
@@ -33,4 +34,6 @@ class Station {
       color: json.containsKey('color') ? Colors.grey : null, // Default color
     );
   }
+
+  get location => null;
 }

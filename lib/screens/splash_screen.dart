@@ -3,13 +3,16 @@ import 'dart:async';
 import '../screens/auth/loginscreen.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _SplashScreenState createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
   double _circleSize = 100;
-  double _opacity = 0.0;
+  final double _opacity = 0.0;
 
   @override
   void initState() {
@@ -26,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
      Future.delayed(Duration(seconds: 4), () {
       Navigator.pushReplacement(
-        context,
+        context, 
         MaterialPageRoute(builder: (context) => LoginScreen()),
       );
     });
