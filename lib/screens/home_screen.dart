@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 16),
 
             // 🔵 Informasi Instalasi
-            // InstallationInfo(futureStations: futureStations),
+            InstallationInfo(futureStations: futureStations),
           ],
         ),
       ),
