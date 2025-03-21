@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../models/StationModel.dart';
+import 'package:mobilehigertech/models/StationModel.dart';
+import 'package:mobilehigertech/screens/station_detail.dart';
+import 'package:mobilehigertech/services/api_service.dart';
 
 class InstallationInfo extends StatelessWidget {
   final Future<List<Station>> futureStations;
@@ -54,30 +56,34 @@ class InstallationInfo extends StatelessWidget {
                 return const Center(child: Text("Tidak ada data"));
               }
 
-              return Column(
-                children: snapshot.data!.map((station) => _buildStationCard(station)).toList(),
+              List<Station> stations = snapshot.data!;
+
+              return Expanded(
+                child: ListView.builder(
+                  itemCount: stations.length,
+                  itemBuilder: (context, index) {
+                    Station station = stations[index];
+                    return Card(
+                      margin: const EdgeInsets.symmetric(vertical: 5),
+                      child: ListTile(
+                        title: Text(station.balaiName),
+                        trailing: const Icon(Icons.arrow_forward_ios),
+                        onTap: () {
+                          // Navigasi ke halaman detail saat diklik
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => StationDetailPage(station: station),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
               );
             },
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStationCard(Station station) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(12),
-      margin: const EdgeInsets.symmetric(vertical: 5),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(station.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-          const SizedBox(height: 6),
         ],
       ),
     );

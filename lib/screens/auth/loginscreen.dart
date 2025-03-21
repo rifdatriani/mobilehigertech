@@ -14,6 +14,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   // ignore: unused_field
+  bool _obscureText = true; // Variabel untuk mengontrol tampilan password
+  // ignore: unused_field
   bool _rememberMe = false; // Variabel untuk menyimpan status Remember Me
 
   void _login() {
@@ -75,11 +77,20 @@ class _LoginScreenState extends State<LoginScreen> {
                 
                 TextField(
                   controller: _passwordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
+                  obscureText: _obscureText,
+                  decoration: InputDecoration(
                     labelText: "Password",
-                    border: OutlineInputBorder(),
-                    suffixIcon: Icon(Icons.visibility),
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureText ? Icons.visibility : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText; // Toggle visibility
+                        });
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -98,6 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: _login,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue[900],
+                    foregroundColor: Colors.white,
                     minimumSize: const Size(double.infinity, 50),
                   ),
                   child: const Text("Login"),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'screens/splash_screen.dart';
-// import 'screens/home_screen.dart';
+// import 'screens/splash_screen.dart';
+import 'screens/home_screen.dart';
 //import 'config/config.dart';
 // import 'services/api_service.dart';
 // import 'models/StationModel.dart';
@@ -27,8 +27,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Splash Screen Example',
-      home: SplashScreen(), 
-      // home: HomeScreen(),
+      // home: SplashScreen(), 
+      home: HomeScreen(),
     );
   }
 }

@@ -19,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late Future<List<Station>> futureStations;
   late Future<List<PosData>> futurePosData;
   final LatLng _initialPosition = const LatLng(-6.9175, 107.6191);
+  var test= ApiService().fetchStations();
 
   @override
   void initState() {
@@ -66,12 +67,12 @@ class _HomeScreenState extends State<HomeScreen> {
             const Divider(thickness: 1, color: Colors.grey), // Garis pemisah
 
             // 🔴 Gunakan PosDashboard di sini
-            PosDashboard(futurePosData: futurePosData),
+            // PosDashboard(futurePosData: futurePosData),
 
             const SizedBox(height: 16),
 
             // 🔵 Informasi Instalasi
-            InstallationInfo(futureStations: futureStations),
+            // InstallationInfo(futureStations: futureStations),
           ],
         ),
       ),

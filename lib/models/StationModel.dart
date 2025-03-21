@@ -1,39 +1,50 @@
-// ignore_for_file: file_names
-import 'package:flutter/material.dart';
-
 class Station {
-  final String name;
-  final int wifiOn;
-  final int wifiOff;
-  final int electrical;
-  final String? title;
-  final int? count;
-  final IconData? icon;
-  final Color? color;
+  final String id;
+  final String balaiName;
+  final double? latitude;
+  final double? longitude;
+  final String provinceName;
+  final AwlrLastReading? awlrLastReading;
 
   Station({
-    required this.name,
-    required this.wifiOn,
-    required this.wifiOff,
-    required this.electrical,
-    this.title,
-    this.count,
-    this.icon,
-    this.color,
+    required this.id,
+    required this.balaiName,
+    this.latitude,
+    this.longitude,
+    required this.provinceName,
+    this.awlrLastReading,
   });
 
   factory Station.fromJson(Map<String, dynamic> json) {
     return Station(
-      name: json['name'],
-      wifiOn: json['wifi_on'],
-      wifiOff: json['wifi_off'],
-      electrical: json['electrical'],
-      title: json.containsKey('title') ? json['title'] : null,
-      count: json.containsKey('count') ? json['count'] : null,
-      icon: json.containsKey('icon') ? Icons.info : null, // Default icon
-      color: json.containsKey('color') ? Colors.grey : null, // Default color
+      id: json["id"]?.toString() ?? "",  // Pastikan id tidak null
+      balaiName: json["balaiName"] ?? "Tidak ada nama",
+      latitude: json["latitude"] != null ? (json["latitude"] as num).toDouble() : null,
+      longitude: json["longitude"] != null ? (json["longitude"] as num).toDouble() : null,
+      provinceName: json["provinceName"] ?? "Tidak diketahui",
+      awlrLastReading: json["awlrLastReading"] != null
+          ? AwlrLastReading.fromJson(json["awlrLastReading"])
+          : null,
     );
   }
+}
 
-  get location => null;
+class AwlrLastReading {
+  final double? waterLevel;
+  final String warningStatus;
+  final String deviceStatus;
+
+  AwlrLastReading({
+    this.waterLevel,
+    required this.warningStatus,
+    required this.deviceStatus,
+  });
+
+  factory AwlrLastReading.fromJson(Map<String, dynamic> json) {
+    return AwlrLastReading(
+      waterLevel: json["waterLevel"] != null ? (json["waterLevel"] as num).toDouble() : null,
+      warningStatus: json["warningStatus"] ?? "Tidak diketahui",
+      deviceStatus: json["deviceStatus"] ?? "Tidak diketahui",
+    );
+  }
 }

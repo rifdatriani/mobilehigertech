@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
-import '../config/config.dart'; // Import konfigurasi API
+import '../config/config.dart'; // Konfigurasi API
 import '../models/pos_data.dart';
+import 'package:flutter/material.dart';
 import '../models/StationModel.dart';
 
 class ApiService {
-  final String baseUrl = Config.baseUrl; // Ambil dari config
+  final String baseUrl = Config.baseUrl;
 
-  // Fungsi untuk membuat header autentikasi
+  // Membuat header autentikasi
   Map<String, String> _getHeaders() {
     final String credentials = base64Encode(utf8.encode('${Config.username}:${Config.password}'));
     return {
@@ -17,26 +17,56 @@ class ApiService {
     };
   }
 
-  // Method untuk mengambil data Station
+  // Mengambil daftar Station
   Future<List<Station>> fetchStations() async {
     try {
       final response = await http.get(
-        Uri.parse("$baseUrl/stations"),
+        Uri.parse("$baseUrl/Station/All"),
         headers: _getHeaders(),
       ).timeout(const Duration(seconds: 10));
 
       if (response.statusCode == 200) {
-        List<dynamic> data = jsonDecode(response.body);
-        return data.map((json) => Station.fromJson(json)).toList();
+        final dynamic data = jsonDecode(response.body);
+
+        if (data is List) {
+          return data.map((json) => Station.fromJson(json)).toList();
+        } else if (data is Map<String, dynamic>) {
+          return [Station.fromJson(data)];
+        } else {
+          throw Exception("Format data API tidak sesuai");
+        }
       } else {
-        throw Exception("Gagal memuat data, status: ${response.statusCode}");
+        throw Exception("Gagal memuat data Station, status: ${response.statusCode}");
       }
     } catch (e) {
       throw Exception("Terjadi kesalahan saat mengambil data Station: $e");
     }
   }
 
-  // Method untuk mengambil data POS
+  // Mengambil detail Station berdasarkan ID
+  Future<Station> fetchStationById(String id) async {
+    try {
+      final response = await http.get(
+        Uri.parse("$baseUrl/Station/$id"),
+        headers: _getHeaders(),
+      ).timeout(const Duration(seconds: 10));
+
+      if (response.statusCode == 200) {
+        final dynamic jsonData = jsonDecode(response.body);
+        if (jsonData is Map<String, dynamic>) {
+          return Station.fromJson(jsonData);
+        } else {
+          throw Exception("Format data detail Station tidak sesuai");
+        }
+      } else {
+        throw Exception("Gagal memuat detail Station, status: ${response.statusCode}");
+      }
+    } catch (e) {
+      throw Exception("Terjadi kesalahan saat mengambil detail Station: $e");
+    }
+  }
+
+  // Mengambil data POS
   Future<List<PosData>> fetchPosData() async {
     try {
       final response = await http.get(
@@ -45,9 +75,10 @@ class ApiService {
       ).timeout(const Duration(seconds: 10));
 
       if (response.statusCode == 200) {
-        List<dynamic> jsonData = jsonDecode(response.body);
-        if (jsonData.length < 7) {
-          throw Exception("Data API tidak lengkap");
+        final dynamic jsonData = jsonDecode(response.body);
+
+        if (jsonData is! List || jsonData.length < 7) {
+          throw Exception("Data API tidak lengkap atau format salah");
         }
 
         return [
@@ -60,10 +91,12 @@ class ApiService {
           PosData.fromJson(jsonData[6], Icons.apartment, Colors.brown),
         ];
       } else {
-        throw Exception("Gagal mengambil data dari API, status: ${response.statusCode}");
+        throw Exception("Gagal mengambil data POS, status: ${response.statusCode}");
       }
     } catch (e) {
       throw Exception("Terjadi kesalahan saat mengambil data POS: $e");
     }
   }
+
+  static getStations() {}
 }
